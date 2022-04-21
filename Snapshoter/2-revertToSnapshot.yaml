@@ -1,0 +1,59 @@
+---
+- hosts: esxi
+  become: yes
+  gather_facts: false
+
+
+  tasks:
+
+  - name: Revert To Snapshot Vmware
+    vmware_guest_snapshot:
+      validate_certs: no          # если нет SSL сертификата
+      hostname: "10.28.91.61"     #vSphere
+      username: administrator@vsphere.local 
+      password: P@ssw0rd
+      datacenter: "DC-1"   # Название DC в котором располагаются VM. Кластер указывать не надо
+      folder: /DC-1        
+      name: "{{ item }}"   # название виртуальной машины
+      state: revert        # Revert to snapshot
+      snapshot_name: clear # Имя снапшота
+    delegate_to: localhost  # Делегация на локалхост
+    loop:           # В цикле указываются виртуальные машины который необходимо сбросить. 
+      - Demo-1
+      - Demo-2
+      - Demo-3
+      - Demo-4
+      - Demo-5
+      - Demo-6
+      - Demo-7
+      - Demo-8
+      - Demo-9
+      - Demo-10
+      - Demo-11
+
+      # Перезагрузка VM после отката к снапшоту
+  - name: Reboot VM 
+    community.vmware.vmware_guest_powerstate:
+      validate_certs: no 
+      hostname: 10.28.91.61
+      username: administrator@vsphere.local
+      password: P@ssw0rd
+      folder: /DC-1
+      name: "{{ item }}"
+      state: reboot-guest  
+    delegate_to: localhost
+  
+    loop:
+      - Demo-1
+      - Demo-2
+      - Demo-3
+      - Demo-4
+      - Demo-5
+      - Demo-6
+      - Demo-7
+      - Demo-8
+      - Demo-9
+      - Demo-10
+      - Demo-11
+
+

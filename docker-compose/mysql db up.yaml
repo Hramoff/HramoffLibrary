@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  database:
+    image: mysql:8.0
+    restart: always
+    container_name: db
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    networks:
+      - db
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: users
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - db 
+
+networks:
+  db:
+    driver: bridge
+

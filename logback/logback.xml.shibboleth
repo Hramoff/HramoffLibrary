@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Logs IdP, but not OpenSAML, messages -->
+    <logger name="net.shibboleth.idp" level="DEBUG"/>
+
+    <!-- Logs ru.vetrf related messages -->
+    <logger name="ru.vetrf" level="DEBUG"/>
+    
+    <!-- Logs inbound and outbound protocols messages at DEBUG level -->
+    
+    <logger name="PROTOCOL_MESSAGE" level="DEBUG" />
+
+    <!--Turn off success ldap log message http://sandbox.fsvps.ru/issues/550968-->
+    <logger name="net.shibboleth.idp.authn.impl.LDAPCredentialValidator" level="WARN"/>
+    <logger name="org.ldaptive.auth.Authenticator" level="WARN"/>
+
+
+    <!-- Logs unencrypted SAML at DEBUG level -->
+   <!--  <logger name="org.opensaml.saml.saml2.encryption.Encrypter" level="DEBUG" /> -->
+
+    <!-- Logs standard system properties during startup at DEBUG level -->
+    <!-- 
+    <logger name="net.shibboleth.idp.log.LogbackLoggingService" level="DEBUG" />
+    -->
+
+    <!-- Especially chatty. -->
+    <logger name="net.shibboleth.idp.saml.attribute.mapping" level="INFO" />
+    <logger name="net.shibboleth.idp.profile.impl" level="INFO"/>
+    <logger name="net.shibboleth.idp.saml" level="INFO"/>
+    <logger name="net.shibboleth.idp.attribute.resolver" level="INFO"/>
+    <logger name="net.shibboleth.idp.relyingparty.impl.DefaultRelyingPartyConfigurationResolver" level="INFO"/>
+    <logger name="net.shibboleth.idp.attribute.filter" level="INFO"/>
+    <logger name="net.shibboleth.idp.profile.spring.factory.FlowDefinitionRegistryFactoryBean" level="INFO"/>
+    <!-- Logs OpenSAML, but not IdP, messages -->
+    <logger name="org.opensaml.saml" level="INFO"/>
+   
+    <logger name="org.apache.xml.security" level="INFO" />
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache.catalina" level="ERROR"/>
+    <logger name="org.eclipse.jetty" level="ERROR"/>
+    
+    <!-- Note that ${idp.home} is the only property available for variable substitution. -->
+    
+    <!-- Process log. -->
+    <appender name="IDP_PROCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-process.log</File>
+        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-process-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="IDP_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Suppress anything below WARN. -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        
+        <File>${idp.home}/logs/idp-warn.log</File>
+        
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-warn-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+        </encoder>
+    </appender>
+    
+    <!-- Audit log. -->
+    <appender name="IDP_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-audit.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-audit-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+    <!-- Consent audit log. -->
+    <appender name="IDP_CONSENT_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-consent-audit.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-consent-audit-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Kaspersky log. -->
+    <appender name="IDP_KASPERSKY" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${idp.home}/logs/idp-kaspersky.log</File>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${idp.home}/logs/idp-kaspersky-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>%date{ISO8601} - %level [%logger:%line] - %msg%n%ex{short}</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Gelf log. -->
+    <appender name="GELF" class="biz.paluch.logging.gelf.logback.GelfLogbackAppender">
+        <param name="graylogHost" value="gelf.fsvps.ru"/>
+        <param name="graylogPort" value="12209"/>
+        <param name="extractStacktrace" value="true"/>
+        <param name="facility" value="test-idp"/>
+        <param name="includeFullMdc" value="true"/>
+    </appender>
+
+    <logger name="Shibboleth-Audit" level="ALL" additivity="false">
+        <appender-ref ref="IDP_AUDIT"/>
+        <appender-ref ref="GELF" />
+    </logger>
+    <logger name="Vetrf-Audit" level="ALL" additivity="false">
+        <appender-ref ref="IDP_AUDIT"/>
+        <appender-ref ref="GELF" />
+    </logger>
+
+    <logger name="Vetrf-Process" level="ALL"/>
+
+    <!-- We need to log everything now for Kaspersky -->
+    <logger name="Vetrf-Kaspersky" level="DEBUG" additivity="false">
+        <appender-ref ref="IDP_KASPERSKY"/>
+    </logger>
+
+    <logger name="Shibboleth-Consent-Audit" level="ALL" additivity="false">
+        <appender-ref ref="IDP_CONSENT_AUDIT"/>
+    </logger>
+    
+    <root level="INFO">
+        <appender-ref ref="IDP_PROCESS"/>
+        <appender-ref ref="IDP_WARN" />
+        <appender-ref ref="GELF" />
+    </root>
+
+</configuration>

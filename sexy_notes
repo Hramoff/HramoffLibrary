@@ -1,2 +1,4 @@
 readlink -f $(which java) | sed s:bin/java::    ==  Получить $JAVA_HOME
 find / -name file*.file                         == Найти файл по имени
+:%s/^#.*$//g                                    == удаляет комментарии
+:%s/\n\{2,}/\r/g                                == удаляет пустые строки

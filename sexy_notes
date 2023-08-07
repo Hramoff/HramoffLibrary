@@ -2,4 +2,5 @@ readlink -f $(which java) | sed s:bin/java::    ==  Получить $JAVA_HOME
 find / -name file*.file                         == Найти файл по имени
 :%s/^#.*$//g                                    == удаляет комментарии
 :%s/\n\{2,}/\r/g                                == удаляет пустые строки
-"{{ groups['YOU_GROUPS'] | join(', ') }}"  == Перебор всех хостов в группе Ansible. Join разделяет хосты точкой с пробелом
+"{{ groups['YOU_GROUPS'] | join(', ') }}"       == Перебор всех хостов в группе Ansible. Join разделяет хосты точкой с пробелом
+du -ah / | sort -rh | head -n 10                == Вывод 10 самых больших файлов в ФС

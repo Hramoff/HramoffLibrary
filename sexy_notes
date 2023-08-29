@@ -4,6 +4,8 @@ find / -name file*.file                         == Найти файл по им
 :%s/\n\{2,}/\r/g                                == удаляет пустые строки
 "{{ groups['YOU_GROUPS'] | join(', ') }}"       == Перебор всех хостов в группе Ansible. Join разделяет хосты точкой с пробелом
 du -ah / | sort -rh | head -n 10                == Вывод 10 самых больших файлов в ФС
+
 CREATE USER 'username'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'username'@'%';
 FLUSH PRIVILEGES;                                      == Создание пользователя MySQL
+

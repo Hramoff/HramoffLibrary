@@ -1,4 +1,4 @@
-readlink -f $(which java) | sed s:bin/java::    ==  Получить $JAVA_HOME
+readlink -f $(which java) | sed s:bin/java::    == Получить $JAVA_HOME
 find / -name file*.file                         == Найти файл по имени
 :%s/^#.*$//g                                    == удаляет комментарии
 :%s/\n\{2,}/\r/g                                == удаляет пустые строки
@@ -16,3 +16,4 @@ GROUP BY table_schema;                          == Вес БД в МБ
 
 
 ansible-vault encrypt_string 'password' --name 'var_name'     == создание хеша vault
+grep -rnw / -e "СТРОКА ПОИСКА"                 == Поиск во всех файлах по строке

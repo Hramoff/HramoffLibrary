@@ -17,3 +17,6 @@ GROUP BY table_schema;                          == Вес БД в МБ
 
 ansible-vault encrypt_string 'password' --name 'var_name'     == создание хеша vault
 grep -rnw / -e "СТРОКА ПОИСКА"                 == Поиск во всех файлах по строке
+
+
+mysqldump -u USER -p -R -v "ИМЯ БАЗЫ ДАННЫХ" > "ИМЯ БАЗЫ ДАННЫХ".sql; gzip "ИМЯ БАЗЫ ДАННЫХ".sql     == Дамп mysql базы. -R с процедурами и триггерами

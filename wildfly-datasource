@@ -1,0 +1,24 @@
+# MySQL
+./jboss-cli.sh -c --command='module add --name=com.mysql --resources=mysql-connector-java.jar --dependencies=javax.api\,javax.transaction.api';
+# ORACLE
+./jboss-cli.sh -c --command='module add --name=com.oracle.ojdbc --resources=ojdbc-7.jar --dependencies=javax.api\,javax.transaction.api'
+
+# MySQL
+./jboss-cli.sh -c --commands='/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql, driver-module-name=com.mysql, driver-datasource-class-name=com.mysql.jdbc.Driver, driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)';
+# ORACLE
+./jboss-cli.sh -c --commands='/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle, driver-module-name=com.oracle, driver-datasource-class-name=oracle.jdbc.driver.OracleDriver, driver-xa-datasource-class-name=oracle.jdbc.xa.client.OracleXADataSource)';
+
+# MySQL
+./jboss-cli.sh -c --commands='/subsystem=datasources/data-source=mysqlDS:add(driver-name=mysql, jndi-name=java:/mysqlDS, user-name=usuario, password=senha, connection-url=jdbc:mysql://localhost:3306/database, use-java-context=true, use-ccm=true, pool-prefill=true, check-valid-connection-sql="select 1 from dual", enabled=true, min-pool-size=3, max-pool-size=10)';
+# ORACLE
+./jboss-cli.sh -c --commands='/subsystem=datasources/data-source=oracleDS:add(driver-name=oracle, jndi-name=java:/oracleDS, user-name=usuario, password=senha, connection-url=jdbc:oracle:thin:@localhost:1521:XE, use-java-context=true, use-ccm=true, pool-prefill=true, check-valid-connection-sql="select 1 from dual", enabled=true, min-pool-size=3, max-pool-size=10)';'
+
+# MySQL
+./jboss-cli.sh -c --commands='/subsystem=datasources/xa-data-source=mysqlDS:add(driver-name=mysql, jndi-name=java:/mysqlDS, user-name=usuario, password=senha, use-java-context=true, use-ccm=true, pool-prefill=true, check-valid-connection-sql="select 1 from dual", enabled=false, min-pool-size=3 , max-pool-size=10)';
+./jboss-cli.sh -c --commands='/subsystem=datasources/xa-data-source=mysqlDS/xa-datasource-properties=URL:add(value=jdbc:mysql://localhost:3306/database)';
+./jboss-cli.sh -c --commands='xa-data-source enable --name=mysqlDS';
+
+# ORACLE
+./jboss-cli.sh -c --commands='/subsystem=datasources/xa-data-source=oracleDS:add(driver-name=oracle, jndi-name=java:/oracleDS, user-name=usuario, password=senha, use-java-context=true, use-ccm=true, pool-prefill=true, check-valid-connection-sql="select 1 from dual", enabled=false)';
+./jboss-cli.sh -c --commands='/subsystem=datasources/xa-data-source=oracleDS/xa-datasource-properties=URL:add(value=jdbc:oracle:thin:@localhost:1521:XE)';
+./jboss-cli.sh -c --commands='xa-data-source enable --name=oracleDS';

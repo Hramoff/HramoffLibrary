@@ -25,3 +25,41 @@ mysql -u USER -p -v "ИМЯ БАЗЫ ДАННЫХ" < "ИМЯ БАЗЫ ДАННЫ
 
 
 truncate -s 0 /var/lib/docker/containers/*/*-json.log удалить содержимое файла, без удаления самого файла
+
+
+
+`root@vps:~# parted /dev/sda`
+GNU Parted 3.2
+Using /dev/vda
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+`(parted) print`                                         
+Model: Virtio Block Device (virtblk)
+Disk /dev/vda: 6442MB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags:
+
+Number  Start   End     Size    Type     File system  Flags
+ 1      1049kB  5369MB  5368MB  primary  ext4         boot
+
+`(parted) resizepart`
+`Partition number? 1`   << the number of the partition you want resize
+Warning: Partition /dev/vda1 is being used. Are you sure you want to continue?
+`Yes/No? Yes`
+`End?  [5369MB]? 100% `   << 100% means we want use all the space available
+
+`(parted) print   `                   
+Model: Virtio Block Device (virtblk)
+Disk /dev/vda: 6442MB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
+
+Number  Start   End     Size    Type     File system  Flags
+ 1      1049kB  6442MB  6441MB  primary  ext4         boot
+
+`(parted) q`                
+Information: You may need to update /etc/fstab.
+
+
+`resize2fs /dev/vda1`
